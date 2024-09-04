@@ -1,0 +1,6 @@
+torch
+numpy
+lmdb
+tqdm
+unicodedata2
+nltk
