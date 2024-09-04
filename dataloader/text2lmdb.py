@@ -13,7 +13,7 @@ from tool.utils import extract_phrases, gen_ngrams
 
 cache = {}
 error = 0
-val_data = 6000000
+val_data = 3000
 char_regrex = '^[_aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ0123456789 !\"\',\-\.:;?_\(\)]+$'
 train_cnt = 0
 val_cnt = 0
@@ -24,8 +24,6 @@ val_cnt = 0
 
 train_env = lmdb.open('./lmdb/train_lmdb') # tạo hoặc mở lmdb kích thước tối đa 10MB
 val_env = lmdb.open('./lmdb/val_lmdb') # tạo hoặc mở lmdb kích thước tối đa 10MB
-
-print('Creating dataset ...')
 
 def write_cache(env, cache):
     """
@@ -80,6 +78,10 @@ for p in tqdm(phrases, desc='Creating dataset ...'):
 # Lưu nốt cache nếu đã thoát khỏi vòng lặp
 if len(cache) > 0:
     write_cache(tgt_env, cache)
+    
+print('Done!')
+print('val_cnt: ', val_cnt)
+print('train_cnt: ', train_cnt)
     
 cache = {}
 cache['num-samples'] = str(train_cnt).encode()

@@ -150,6 +150,15 @@ class BasicDataset(Dataset):
 
         return  ' '.join(words)
     
+    def change(self, text):
+        match_chars = self._char_regrex(text)
+        if len(match_chars) == 0:
+            return text
+
+        text = self._random_replace(text, match_chars)
+
+        return text
+    
     def __getitem__(self, idx):
         ori = self.read_data(idx)
         gts = ori

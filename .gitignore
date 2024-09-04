@@ -1,3 +1,7 @@
 *.png
 __pycache__
 .vscode
+lmdb
+train.log
+train_lmdb.json
+val_lmdb.json

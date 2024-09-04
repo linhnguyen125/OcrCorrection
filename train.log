@@ -1,0 +1,5 @@
+step: 000005, train_loss: 4.8769, gpu_time: 231.18537020683289
+step: 000010, train_loss: 4.8156, gpu_time: 250.90291213989258
+step: 000015, train_loss: 4.8080, gpu_time: 270.10560512542725
+step: 000020, train_loss: 4.8440, gpu_time: 232.5090672969818
+step: 000025, train_loss: 4.8264, gpu_time: 222.709969997406

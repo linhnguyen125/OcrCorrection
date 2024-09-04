@@ -1,3 +1,4 @@
+import multiprocessing
 import os
 import time
 import numpy as np
@@ -20,9 +21,9 @@ from tool.utils import batch_to_device, compute_accuracy
 class Trainer(object):
     def __init__(self):
         self.batch_size = 768
-        self.num_iters = 1000000
-        self.valid_every = 6000
-        self.print_every = 200
+        self.num_iters = 1000
+        self.valid_every = 100
+        self.print_every = 5
         self.lr = 0.0001
         self.logger = Logger('./train.log')
         
@@ -82,7 +83,7 @@ class Trainer(object):
     def create_dataloader(self, dataset, shuffle):
         # create train and val dataloader
         sampler = ClusterRandomSampler(dataset, self.batch_size, shuffle)
-        data_loader = DataLoader(dataset, batch_size=self.batch_size, sampler=sampler, collate_fn=Collator(), shuffle=False, num_workers=8, pin_memory=True)
+        data_loader = DataLoader(dataset, batch_size=self.batch_size, sampler=sampler, collate_fn=Collator(), shuffle=False, num_workers=0, pin_memory=True)
 
         return data_loader
     
@@ -94,7 +95,7 @@ class Trainer(object):
         data_iter = iter(self.train_loader)
         best_fold_acc = [0] * (len(self.val_loader) // (self.sample // self.batch_size) + 1)
 
-        for _ in range(self.num_iters):
+        for _ in tqdm(range(self.num_iters), desc='Training...', ncols=100):
             self.model.train()
             try:
                 batch = next(data_iter)
@@ -244,4 +245,8 @@ class Trainer(object):
 
         return loss_item
     
-Trainer().train()
+if __name__ == '__main__':
+    multiprocessing.freeze_support()
+
+    # Khởi tạo và chạy Trainer
+    Trainer().train()
