@@ -23,7 +23,7 @@ class Trainer(object):
         self.batch_size = 768
         self.num_iters = 1000
         self.valid_every = 100
-        self.print_every = 5
+        self.print_every = 10
         self.lr = 0.0001
         self.logger = Logger('./train.log')
         
@@ -33,7 +33,7 @@ class Trainer(object):
         # create model
         weight_path = './weights/seq2seq.pth'
         self.model = Seq2Seq(len(alphabet), encoder_hidden=256, decoder_hidden=256)
-        self.device = ("cuda:1" if torch.cuda.is_available() else "cpu")
+        self.device = ("cuda:0" if torch.cuda.is_available() else "cpu")
         self.criterion = LabelSmoothingLoss(len(alphabet), 0).cuda(1)
         self.model = self.model.to(device=self.device)
         self.weight_path = weight_path

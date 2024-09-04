@@ -3,4 +3,5 @@ numpy
 lmdb
 tqdm
 unicodedata2
+unidecode
 nltk
