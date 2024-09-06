@@ -21,9 +21,9 @@ from tool.utils import batch_to_device, compute_accuracy
 class Trainer(object):
     def __init__(self):
         self.batch_size = 768
-        self.num_iters = 1000
-        self.valid_every = 100
-        self.print_every = 5
+        self.num_iters = 10000
+        self.valid_every = 600
+        self.print_every = 20
         self.lr = 0.0001
         self.logger = Logger('./train.log')
         
@@ -57,7 +57,7 @@ class Trainer(object):
         # create dataloader
         self.train_loader = self.create_dataloader(self.train_dataset, True)
         self.val_loader = self.create_dataloader(self.val_dataset, False)
-        self.sample = 1000000
+        self.sample = 10000
             
     def load_weights(self, filename):
         state_dict = torch.load(filename, map_location=torch.device(self.device))
@@ -237,11 +237,24 @@ class Trainer(object):
         outputs = outputs.flatten(0, 1)
         tgt_output = tgt_output.flatten()
         loss = self.criterion(outputs, tgt_output)
-        loss.backward()
+        try:
+            loss.backward()
+        except RuntimeError as e:
+            print(f"Error during backward pass: {e}")
+            print(f"Loss: {loss}")
+            for name, param in self.model.named_parameters():
+                if param.grad is None:
+                    print(f"Parameter {name} has no gradient")
+                else:
+                    print(f"Parameter {name} gradient: {param.grad}")
+            raise e
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1)
         self.optimizer.step()
         self.scheduler.step()
         loss_item = loss.item()
+        
+        # Giải phóng bộ nhớ GPU không sử dụng
+        torch.cuda.empty_cache()
 
         return loss_item
     

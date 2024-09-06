@@ -1,5 +1,6 @@
-step: 000005, train_loss: 4.8769, gpu_time: 231.18537020683289
-step: 000010, train_loss: 4.8156, gpu_time: 250.90291213989258
-step: 000015, train_loss: 4.8080, gpu_time: 270.10560512542725
-step: 000020, train_loss: 4.8440, gpu_time: 232.5090672969818
-step: 000025, train_loss: 4.8264, gpu_time: 222.709969997406
+step: 000020, train_loss: 4.8431, gpu_time: 985.5206725597382
+step: 000040, train_loss: 4.7819, gpu_time: 984.1120569705963
+step: 000060, train_loss: 4.7580, gpu_time: 940.1106445789337
+step: 000080, train_loss: 4.7149, gpu_time: 970.151034116745
+step: 000100, train_loss: 4.6931, gpu_time: 1377.1082146167755
+step: 000120, train_loss: 4.5723, gpu_time: 1086.13170170784

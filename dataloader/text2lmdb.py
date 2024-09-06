@@ -13,15 +13,11 @@ from tool.utils import extract_phrases, gen_ngrams
 
 cache = {}
 error = 0
-val_data = 3000
 char_regrex = '^[_aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ0123456789 !\"\',\-\.:;?_\(\)]+$'
 train_cnt = 0
 val_cnt = 0
 
 # open lmdb database
-# train_env = lmdb.open('./lmdb/train_lmdb', map_size=1e7) # tạo hoặc mở lmdb kích thước tối đa 10MB
-# val_env = lmdb.open('./lmdb/val_lmdb', map_size=1e7) # tạo hoặc mở lmdb kích thước tối đa 10MB
-
 train_env = lmdb.open('./lmdb/train_lmdb') # tạo hoặc mở lmdb kích thước tối đa 10MB
 val_env = lmdb.open('./lmdb/val_lmdb') # tạo hoặc mở lmdb kích thước tối đa 10MB
 
@@ -41,6 +37,7 @@ phrases = itertools.chain.from_iterable(extract_phrases(text) for text in lines)
 phrases = [p.strip() for p in phrases if len(p.split()) > 1]
 
 tgt_env = val_env
+val_data = round(len(phrases) * 0.15)
 
 for p in tqdm(phrases, desc='Creating dataset ...'):
     if not re.match(char_regrex, p):
