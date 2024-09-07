@@ -162,7 +162,7 @@ class BasicDataset(Dataset):
     def __getitem__(self, idx):
         ori = self.read_data(idx)
         gts = ori
-
+        
         if len(ori.split()) > 3:
             rd_aug_idx = np.random.randint(low=0, high=9, size=1)[0]
             if rd_aug_idx < 3:

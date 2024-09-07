@@ -1,0 +1,2 @@
+step: 000100, train_loss: 4.7722, gpu_time: 46.08539152145386
+step: 000200, train_loss: 4.6321, gpu_time: 47.256325483322144

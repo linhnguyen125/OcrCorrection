@@ -21,17 +21,17 @@ from tool.utils import batch_to_device, compute_accuracy
 class Trainer(object):
     def __init__(self):
         self.batch_size = 768
-        self.num_iters = 10000
-        self.valid_every = 600
-        self.print_every = 20
+        self.num_iters = 50000
+        self.valid_every = 2000
+        self.print_every = 100
         self.lr = 0.0001
-        self.logger = Logger('./train.log')
+        self.logger = Logger('./train_item.log')
         
         # create vocab model
         self.vocab = Vocab(alphabet)
         
         # create model
-        weight_path = './weights/seq2seq.pth'
+        weight_path = './weights/seq2seq_item.pth'
         self.model = Seq2Seq(len(alphabet), encoder_hidden=256, decoder_hidden=256)
         self.device = ("cuda:0" if torch.cuda.is_available() else "cpu")
         self.criterion = LabelSmoothingLoss(len(alphabet), 0).cuda(1)
@@ -48,8 +48,8 @@ class Trainer(object):
         self.scheduler = OneCycleLR(self.optimizer, max_lr=self.lr, total_steps=self.num_iters, pct_start=0.1)
         
         # create dataset
-        self.train_dataset = BasicDataset('./lmdb/train_lmdb')
-        self.val_dataset = BasicDataset('./lmdb/val_lmdb')
+        self.train_dataset = BasicDataset('./lmdb/train_item_lmdb')
+        self.val_dataset = BasicDataset('./lmdb/val_item_lmdb')
         
         print('The number of train data: ', len(self.train_dataset))
         print('The number of val data: ', len(self.val_dataset))
@@ -57,7 +57,7 @@ class Trainer(object):
         # create dataloader
         self.train_loader = self.create_dataloader(self.train_dataset, True)
         self.val_loader = self.create_dataloader(self.val_dataset, False)
-        self.sample = 10000
+        self.sample = 50000
             
     def load_weights(self, filename):
         state_dict = torch.load(filename, map_location=torch.device(self.device))
@@ -76,7 +76,7 @@ class Trainer(object):
         path, _ = os.path.split(filename)
         os.makedirs(path, exist_ok=True)
         if self.sample != len(self.val_loader):
-            torch.save(self.model.state_dict(), './weights/seq2seq' + '_' + str(fold_id) + '.pth')
+            torch.save(self.model.state_dict(), './weights/seq2seq_item' + '_' + str(fold_id) + '.pth')
         else:
             torch.save(self.model.state_dict(), filename)
             

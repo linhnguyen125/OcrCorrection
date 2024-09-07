@@ -2,12 +2,15 @@ import re
 from nltk import ngrams
 import numpy as np
 
+from config import alphabet
+
 
 def extract_phrases(text):
     """
     Sử dụng biểu thức chính quy để tìm các cụm từ\n
     Ex: "Hello world! This is a test." -> ["Hello world", "This is a test"]
     """
+    text = ''.join([c for c in text if c in alphabet])
     return re.findall(r'\w[\w ]+', text)
 
 def gen_ngrams(words, n=5):
