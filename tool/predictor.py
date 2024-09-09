@@ -12,7 +12,7 @@ from tool.utils import get_bucket
 
 class Predictor(object):
     def __init__(self, device):
-        self.weight_path = "./weights/seq2seq_item_0.pth"
+        self.weight_path = "./weights/seq2seq_0.pth"
         self.model = Seq2Seq(len(alphabet), encoder_hidden=256, decoder_hidden=256)
         self.device = device
         self.model.load_state_dict(torch.load(self.weight_path, map_location=device), strict=False)

@@ -20,8 +20,8 @@ map_size1 = 10 * 1024 * 1024 * 1024  # 10 GB
 map_size2 = 2 * 1024 * 1024 * 1024  # 2 GB
 
 # open lmdb database
-train_env = lmdb.open('./lmdb/train_item_lmdb', map_size=map_size1)
-val_env = lmdb.open('./lmdb/val_item_lmdb', map_size=map_size2)
+train_env = lmdb.open('./lmdb/train_lmdb', map_size=map_size1)
+val_env = lmdb.open('./lmdb/val_lmdb', map_size=map_size2)
 
 def write_cache(env, cache):
     """
@@ -32,7 +32,7 @@ def write_cache(env, cache):
             txn.put(k.encode(), v)
             
 # load data from file txt
-file_path = './traindata/data_inventory_item.txt'
+file_path = './traindata/train_data.txt'
 lines = open(file_path, 'r', encoding='utf-8').readlines()
 
 phrases = itertools.chain.from_iterable(extract_phrases(text) for text in lines)
@@ -78,12 +78,8 @@ for p in tqdm(phrases, desc='Creating dataset ...'):
 if len(cache) > 0:
     write_cache(tgt_env, cache)
     
-print('Done!')
-print('val_cnt: ', val_cnt-1)
-print('train_cnt: ', train_cnt)
-    
 cache = {}
-cache['num-samples'] = str(train_cnt).encode()
+cache['num-samples'] = str(train_cnt+1).encode()
 write_cache(train_env, cache)
 
 cache = {}

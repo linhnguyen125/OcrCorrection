@@ -25,13 +25,13 @@ class Trainer(object):
         self.valid_every = 2000
         self.print_every = 100
         self.lr = 0.0001
-        self.logger = Logger('./train_item.log')
+        self.logger = Logger('./train.log')
         
         # create vocab model
         self.vocab = Vocab(alphabet)
         
         # create model
-        weight_path = './weights/seq2seq_item.pth'
+        weight_path = './weights/seq2seq.pth'
         self.model = Seq2Seq(len(alphabet), encoder_hidden=256, decoder_hidden=256)
         self.device = ("cuda:0" if torch.cuda.is_available() else "cpu")
         self.criterion = LabelSmoothingLoss(len(alphabet), 0).cuda(1)
@@ -48,8 +48,8 @@ class Trainer(object):
         self.scheduler = OneCycleLR(self.optimizer, max_lr=self.lr, total_steps=self.num_iters, pct_start=0.1)
         
         # create dataset
-        self.train_dataset = BasicDataset('./lmdb/train_item_lmdb')
-        self.val_dataset = BasicDataset('./lmdb/val_item_lmdb')
+        self.train_dataset = BasicDataset('./lmdb/train_lmdb')
+        self.val_dataset = BasicDataset('./lmdb/val_lmdb')
         
         print('The number of train data: ', len(self.train_dataset))
         print('The number of val data: ', len(self.val_dataset))
@@ -76,7 +76,7 @@ class Trainer(object):
         path, _ = os.path.split(filename)
         os.makedirs(path, exist_ok=True)
         if self.sample != len(self.val_loader):
-            torch.save(self.model.state_dict(), './weights/seq2seq_item' + '_' + str(fold_id) + '.pth')
+            torch.save(self.model.state_dict(), './weights/seq2seq' + '_' + str(fold_id) + '.pth')
         else:
             torch.save(self.model.state_dict(), filename)
             

@@ -1,8 +1,3 @@
 __pycache__
 .vscode
 lmdb
-train_lmdb.json
-val_lmdb.json
-train_item_lmdb.json
-val_item_lmdb.json
-weights

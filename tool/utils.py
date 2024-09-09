@@ -11,7 +11,7 @@ def extract_phrases(text):
     Ex: "Hello world! This is a test." -> ["Hello world", "This is a test"]
     """
     text = ''.join([c for c in text if c in alphabet])
-    return re.findall(r'\w[\w ]+', text)
+    return re.findall(r'\w[\w ]*|\s\W+|\W+', text)
 
 def gen_ngrams(words, n=5):
     """
