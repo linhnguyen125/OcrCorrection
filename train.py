@@ -31,7 +31,7 @@ class Trainer(object):
         self.vocab = Vocab(alphabet)
         
         # create model
-        weight_path = './weights/seq2seq.pth'
+        weight_path = './weights/seq2seq_0.pth'
         self.model = Seq2Seq(len(alphabet), encoder_hidden=256, decoder_hidden=256)
         self.device = ("cuda:0" if torch.cuda.is_available() else "cpu")
         self.criterion = LabelSmoothingLoss(len(alphabet), 0).cuda(1)
